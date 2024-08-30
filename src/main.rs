@@ -6,7 +6,7 @@ use std::io::Read as _;
 use std::path::Path;
 use std::{collections::HashMap, fmt::Display, process::exit};
 
-use clap::{arg, ArgGroup, Command};
+use clap::{arg, Arg, ArgGroup, Command};
 use colored::Colorize;
 use serde::{Serialize, Serializer};
 
