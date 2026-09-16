@@ -123,14 +123,22 @@ fn throw_error0(err_string: impl Display, code: i32) {
 fn frequency_map(string: String) -> HashMapWrapper {
     let mut fmap: HashMap<char, u32> = HashMap::new();
 
-    for character in string.chars() {
-            let opt_ctr = fmap.get(&character);
-            if opt_ctr.is_some() {
-                fmap.insert(character, opt_ctr.unwrap() + 1);
-            } else {
-                fmap.insert(character, 1);
+    if string.is_ascii() {
+        let mut counts = [0u32; 128];
+        for &b in string.as_bytes() {
+            counts[b as usize] += 1;
+        }
+
+        for (i, &c) in counts.iter().enumerate() {
+            if c > 0 {
+                fmap.insert(i as u8 as char, c);
             }
-    };
+        }
+    } else {
+        for character in string.chars() {
+            *fmap.entry(character).or_insert(0) += 1;
+        }
+    }
 
     HashMapWrapper { map: fmap }
 }
